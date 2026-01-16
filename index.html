@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +10,38 @@
 
 <h2>Scan to Print</h2>
 
+<label for="filename">Enter filename (.spfmtz): </label>
+<input type="text" id="filename" placeholder="smapri-variable-test.spfmtz" style="width:250px;">
+<button onclick="updateQR()">Update QR</button>
+
+<br><br>
+
 <img
+  id="qrImage"
   src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=smapri:/Format/Print?__format_id_number=1&__format_archive_url=https%3A%2F%2Fraw.githubusercontent.com%2Fwingsato%2Fsmapri%2Fmain%2Fsmapri-variable-test.spfmtz"
   alt="SmaPri Print QR Code"
-/>
+/ent.getElementById("filename").value.trim();
+    if (!filename) {
+        alert("Please enter a filename.");
+        return;
+    }
+
+    // Encode the filename into the GitHub raw URL
+    const encodedUrl = encodeURIComponent(
+        "https://raw.githubusercontent.com/wingsato/smapri/main/" + filename
+    );
+
+    const qrUrl =
+        "https://api.qrserver.com/v1/create-qr-code/?size=300x300" +
+        "&data=" +
+        "smapri:/Format/Print?__format_id_number=1" +
+        "&__format_archive_url=" +
+        encodedUrl;
+
+    document.getElementById("qrImage").src = qrUrl;
+}
+</script>
 
 </body>
 </html>
+``
