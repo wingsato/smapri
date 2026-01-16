@@ -1,47 +1,44 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>SmaPri QR Print</title>
+<title>SmaPri Print</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-<h2>Scan to Print</h2>
+<button onclick="printLabel()">Print Label</button>
 
-<label for="filename">Enter filename (.spfmtz): </label>
-<input type="text" id="filename" placeholder="smapri-variable-test.spfmtz" style="width:250px;">
-<button onclick="updateQR()">Update QR</button>
+<script>
+function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
 
-<br><br>
+function printLabel() {
 
-<img
-  id="qrImage"
-  src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=smapri:/Format/Print?__format_id_number=1&__format_archive_url=https%3A%2F%2Fraw.githubusercontent.com%2Fwingsato%2Fsmapri%2Fmain%2Fsmapri-variable-test.spfmtz"
-  alt="SmaPri Print QR Code"
-/ent.getElementById("filename").value.trim();
-    if (!filename) {
-        alert("Please enter a filename.");
-        return;
+    var formatUrl =
+        "https://raw.githubusercontent.com/wingsato/smapri/main/smarpi-NTUC-test.spfmtz";
+
+    var params =
+        "__format_id_number=1" +
+        "&__format_archive_url=" + encodeURIComponent(formatUrl) +
+        "&item_name="   + encodeURIComponent("Apple") +
+        "&item_origin=" + encodeURIComponent("USA") +
+        "&item_batch="  + encodeURIComponent("B24011601") +
+        "&item_price="  + encodeURIComponent("1.50");
+
+    var url;
+
+    if (isIOS()) {
+        url = "smapri:/Format/Print?" + params;
+    } else {
+        url = "http://localhost:8080/Format/Print?" + params;
     }
 
-    // Encode the filename into the GitHub raw URL
-    const encodedUrl = encodeURIComponent(
-        "https://raw.githubusercontent.com/wingsato/smapri/main/" + filename
-    );
-
-    const qrUrl =
-        "https://api.qrserver.com/v1/create-qr-code/?size=300x300" +
-        "&data=" +
-        "smapri:/Format/Print?__format_id_number=1" +
-        "&__format_archive_url=" +
-        encodedUrl;
-
-    document.getElementById("qrImage").src = qrUrl;
+    window.location.href = url;
 }
 </script>
 
 </body>
 </html>
-``
