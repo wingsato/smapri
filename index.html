@@ -8,6 +8,28 @@
 
 <body>
 
+<h3>Label Data</h3>
+
+<label>
+Item Name:
+<input id="item_name" type="text" value="Apple">
+</label><br><br>
+
+<label>
+Origin:
+<input id="item_origin" type="text" value="USA">
+</label><br><br>
+
+<label>
+Batch:
+<input id="item_batch" type="text" value="B24011601">
+</label><br><br>
+
+<label>
+Price:
+<input id="item_price" type="number" step="0.01" value="1.50">
+</label><br><br>
+
 <button onclick="printLabel()">Print Label</button>
 
 <script>
@@ -20,21 +42,22 @@ function printLabel() {
     var formatUrl =
         "https://raw.githubusercontent.com/wingsato/smapri/main/smarpi-NTUC-test.spfmtz";
 
+    var itemName   = document.getElementById("item_name").value;
+    var itemOrigin = document.getElementById("item_origin").value;
+    var itemBatch  = document.getElementById("item_batch").value;
+    var itemPrice  = document.getElementById("item_price").value;
+
     var params =
         "__format_id_number=1" +
         "&__format_archive_url=" + encodeURIComponent(formatUrl) +
-        "&item_name="   + encodeURIComponent("Apple") +
-        "&item_origin=" + encodeURIComponent("USA") +
-        "&item_batch="  + encodeURIComponent("B24011601") +
-        "&item_price="  + encodeURIComponent("1.50");
+        "&item_name="   + encodeURIComponent(itemName) +
+        "&item_origin=" + encodeURIComponent(itemOrigin) +
+        "&item_batch="  + encodeURIComponent(itemBatch) +
+        "&item_price="  + encodeURIComponent(itemPrice);
 
-    var url;
-
-    if (isIOS()) {
-        url = "smapri:/Format/Print?" + params;
-    } else {
-        url = "http://localhost:8080/Format/Print?" + params;
-    }
+    var url = isIOS()
+        ? "smapri:/Format/Print?" + params
+        : "http://localhost:8080/Format/Print?" + params;
 
     window.location.href = url;
 }
